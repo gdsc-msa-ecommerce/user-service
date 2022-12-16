@@ -5,6 +5,7 @@ import com.gdsc.userservice.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
+@RequiredArgsConstructor
 public class JwtTokenService {
     @Value("${jwt.secretKey}")
     private String JWT_SECRET_KEY;
@@ -20,7 +22,7 @@ public class JwtTokenService {
     @Value("${jwt.refreshTokenDuration}")
     private String REFRESH_TOKEN_DURATION;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public String issueAccessToken(Long id) {
         long currentTime = System.currentTimeMillis();

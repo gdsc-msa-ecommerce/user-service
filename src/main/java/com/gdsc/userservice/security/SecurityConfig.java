@@ -2,6 +2,7 @@ package com.gdsc.userservice.security;
 
 import com.gdsc.userservice.filter.CustomLoginFilter;
 import com.gdsc.userservice.filter.JwtFilter;
+import com.gdsc.userservice.handler.CustomLoginSuccessFilterAsKotlin;
 import com.gdsc.userservice.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -24,6 +25,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final CustomLoginSuccessFilterAsKotlin jwtFilter;
 
     private final CustomAuthenticationProvider customAuthenticationProvider;
 
@@ -52,7 +55,7 @@ public class SecurityConfig {
         CustomLoginFilter filter = new CustomLoginFilter(authenticationManager());
         filter.setAuthenticationSuccessHandler(customSuccessHandler);
         http
-                .addFilterAt(new JwtFilter(), AuthorizationFilter.class)
+                .addFilterAt(jwtFilter, AuthorizationFilter.class)
                 .addFilterAt(filter, UsernamePasswordAuthenticationFilter.class)
         ;
         return http.build();
